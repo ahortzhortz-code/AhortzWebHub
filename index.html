@@ -150,17 +150,18 @@
 
                 <!-- Action Buttons -->
                 <div class="flex gap-3 mt-6">
-                    <button class="bg-white text-black hover:bg-gray-200 px-5 py-2 rounded-lg font-medium transition-colors text-sm">
-                        Go to Dashboard
+                    <button onclick="window.open(['https://www.youtube.com/watch?v=tpiyEe_CqB4', 'https://www.youtube.com/watch?v=cbP2N1BQdYc', 'https://www.youtube.com/watch?v=hY7m5jjJ9mM', 'https://www.youtube.com/watch?v=0Bmhjf0rKe8'][Math.floor(Math.random()*4)], '_blank')" class="bg-white text-black hover:bg-gray-200 px-5 py-2 rounded-lg font-medium transition-colors text-sm cursor-pointer">
+                        Go to เติมแมว
                     </button>
-                    <button class="bg-transparent border border-gray-600 text-white hover:bg-gray-800 px-5 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-2">
-                        Share hub
+                    <!-- เปลี่ยนจาก <a> เป็น <button> เพื่อเรียกใช้ Pop-up -->
+                    <button onclick="openDonateModal()" class="bg-transparent border border-gray-600 text-white hover:bg-gray-800 px-5 py-2 rounded-lg font-medium transition-colors text-sm flex items-center gap-2 cursor-pointer">
+                        Donate here
                     </button>
                 </div>
 
                 <!-- Bio -->
                 <p class="mt-6 text-gray-300 text-sm md:text-base">
-                    รวมเว็บไซต์ทั้งหมดของฉัน ฉันคือเคะน้อยย่ะอ๊อท
+                    รวมเว็บไซต์ทั้งหมดของฉัน ฉันคือเคะน้อยอะอ๊อทฺ
                 </p>
             </div>
         </header>
@@ -170,6 +171,33 @@
             <!-- Cards will be injected here via JavaScript -->
         </div>
 
+    </div>
+
+    <!-- Modal บริจาค (Pop-up) -->
+    <div id="donateModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity opacity-0 duration-300">
+        <div class="bg-[#1a1d24] border border-[#2a2d36] rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300 relative">
+            <!-- ปุ่มกากบาทปิด -->
+            <button onclick="closeDonateModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            
+            <div class="text-center mt-2">
+                <h3 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-600 mb-3 drop-shadow-lg">
+                    กราบแทบตัก งามๆ 3 ที! 🙇‍♂️✨
+                </h3>
+                <p class="text-gray-300 text-sm mb-6 leading-relaxed">
+                    โอ้พระสงฆ์! ขอบพระคุณเทพบุตรเทพธิดาทุกท่านที่เมตตาต่อเคะตัวน้อยตาดำๆ คนนี้ เงินทุกบาททุกสตางค์ของท่านจะถูกนำไปต่อชีวิต (และจ่ายค่าเน็ต) ให้กระผมได้เอามาซื้อม้าเพื่อสร้างสรรค์ผลงานต่อไป! ขอให้ท่านเจริญๆ ร่ำรวยเงินทองไหลมาเทมา ถูกหวยรางวัลที่ 1 สาธุ 99! 🙏💖🎉
+                </p>
+                
+                <div class="bg-white p-3 rounded-xl inline-block mb-2 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                    <img src="https://promptpay.io/1749700003240.png" alt="PromptPay QR" class="w-48 h-48">
+                </div>
+                
+                <p class="text-gray-500 text-xs mt-3">สแกนได้ด้วยแอปธนาคารทุกแอปเลยค้าบ</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -388,7 +416,7 @@
             { 
                 id: 10, 
                 name: "Contact Me", 
-                url: "#", 
+                url: "https://discord.gg/u4Cqkek9j", 
                 desc: "ช่องทางติดต่อ และติดตามผลงานใหม่ๆ",
                 mockup: `
                     <div class="w-full h-full bg-[#1e293b] flex items-center justify-center">
@@ -425,6 +453,40 @@
             `;
             container.innerHTML += cardHtml;
         });
+
+        // ฟังก์ชันควบคุม Pop-up บริจาค
+        function openDonateModal() {
+            const modal = document.getElementById('donateModal');
+            const modalContent = modal.querySelector('div');
+            
+            modal.classList.remove('hidden');
+            // ดีเลย์เล็กน้อยเพื่อให้ CSS Transition ทำงาน
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeDonateModal() {
+            const modal = document.getElementById('donateModal');
+            const modalContent = modal.querySelector('div');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            
+            // รอให้อนิเมชันจบแล้วค่อยซ่อน element
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // ปิด Pop-up เมื่อคลิกที่พื้นหลังสีดำ
+        window.onclick = function(event) {
+            const modal = document.getElementById('donateModal');
+            if (event.target == modal) {
+                closeDonateModal();
+            }
+        }
     </script>
 </body>
 </html>
